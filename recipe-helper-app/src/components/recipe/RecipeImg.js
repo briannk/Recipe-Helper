@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../stylesheets/RecipeImg.css";
+import "../../stylesheets/RecipeImg.css";
 
 const RecipeImg = ({ path }) => {
   // stores the image being uploaded
@@ -7,8 +7,6 @@ const RecipeImg = ({ path }) => {
   const [uploadedImage, setUploadedImage] = useState();
 
   let uploadImage = (e) => {
-    console.log("Processing upload");
-    console.log(e.target.files[0]);
     setUploadedImage(e.target.files[0]);
   };
 

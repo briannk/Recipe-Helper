@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { useGlobalContext } from "../context";
-import Message from "../components/Message";
+import { useGlobalContext } from "../../context";
+import Message from "../Message";
 
 const SignIn = () => {
   const emailRef = useRef();
@@ -16,7 +16,6 @@ const SignIn = () => {
 
     try {
       setLoading(true);
-      // setMessage({});
       await signIn(emailRef.current.value, passwordRef.current.value);
       history.push("/");
     } catch {

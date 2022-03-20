@@ -7,7 +7,6 @@ const RecipeDirection = ({
   handleChange,
   toEdit = false,
 }) => {
-  console.log("toEdit ", toEdit);
   let handleChangeSet = (e) => {
     let dispatchObj = {
       type: "SET_DIRECTION",
@@ -21,7 +20,6 @@ const RecipeDirection = ({
     // is resolved during event propagation and won't be
     // available once passed
     let target = e.currentTarget;
-    // console.log("test: ", foo);
     let dispatchObj = {
       type: "REMOVE_DIRECTION",
       payload: { event: target, listId },
@@ -61,9 +59,7 @@ const RecipeDirection = ({
 
   useEffect(() => {
     if (directionProp === "") {
-      let dummyObj = { target: marker };
-      console.log("!!!dummyObj ", dummyObj);
-      let dispatchObj = { payload: { target: dummyObj } };
+      let dispatchObj = { payload: { event: { target: marker } } };
       handleChange(dispatchObj);
     }
   }, [marker]);
