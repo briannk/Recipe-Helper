@@ -1,13 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Recipes from "./components/Recipes";
+import Recipes from "./components/recipe/Recipes";
 import Home from "./components/Home";
-import SignUp from "./components/SignUp";
-import SignIn from "./components/SignIn";
-import Recipe from "./components/Recipe";
+import SignUp from "./components/user/SignUp";
+import SignIn from "./components/user/SignIn";
+import Recipe from "./components/recipe/Recipe";
 import Create from "./components/Create";
-import Settings from "./components/Settings";
+import Settings from "./components/user/Settings";
 
 function App() {
   return (

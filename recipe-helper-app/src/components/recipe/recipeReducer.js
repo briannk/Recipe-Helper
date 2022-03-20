@@ -7,7 +7,6 @@
 
 // functions to handle error array
 function checkError(state, node, action) {
-  console.log("checkError");
   if (node === "") {
     if (!state.error.includes(node)) {
       state.error.push(action.payload.event.target);
@@ -17,9 +16,6 @@ function checkError(state, node, action) {
 }
 
 function removeError(state, node) {
-  console.log("removeError");
-  console.log("node: ", node);
-
   if (state.error?.includes(node)) {
     let index = state.error.indexOf(node);
     state.error = [
@@ -27,10 +23,7 @@ function removeError(state, node) {
       ...state.error.slice(index + 1),
     ];
     node.classList.remove("input-error");
-    console.log("poppin");
   }
-
-  console.log("removeError end");
   return state;
 }
 
@@ -139,7 +132,7 @@ const recipeReducer = (state, action) => {
       }
       break;
     case "SET_VISIBILITY":
-      newState["visibility"] = action.payload.node.checked
+      newState["visibility"] = action.payload.event.target.checked
         ? "PUBLIC"
         : "PRIVATE";
       break;
@@ -161,7 +154,7 @@ const recipeReducer = (state, action) => {
       break;
 
     case "REMOVE_INGREDIENT":
-      console.log("removing ingredient ", action.payload.node.parentNode);
+      console.log("removing ingredient ", action.payload.listId);
       console.log("removing listId: ", action.payload.listId);
       if (newState["ingredients"].length > action.payload.listId) {
         newState["ingredients"] = [

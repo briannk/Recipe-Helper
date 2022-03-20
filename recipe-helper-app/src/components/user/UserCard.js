@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useGlobalContext } from "../context";
+import { useGlobalContext } from "../../context";
 import { Link, useHistory } from "react-router-dom";
 import { TiImage, TiCog } from "react-icons/ti";
 // import context for current logged in user
@@ -7,7 +7,6 @@ import { TiImage, TiCog } from "react-icons/ti";
 const UserCard = () => {
   const { user, signOut, setMessage } = useGlobalContext();
   const history = useHistory();
-  console.log(user.email);
 
   const [edit, setEdit] = useState(false);
 

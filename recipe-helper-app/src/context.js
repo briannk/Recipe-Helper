@@ -8,10 +8,10 @@ const useGlobalContext = () => {
 };
 
 const AppProvider = ({ children }) => {
-  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({
     // initialize with placeholder data maybe?
   });
+  const [loading, setLoading] = useState(true);
 
   // object to store message and message type
   const [message, setMessage] = useState(null);
@@ -36,8 +36,8 @@ const AppProvider = ({ children }) => {
   useEffect(() => {
     const unsub = auth.onAuthStateChanged((user) => {
       setUser(user);
+      setLoading(false);
     });
-
     return unsub;
   }, []);
 
@@ -55,7 +55,9 @@ const AppProvider = ({ children }) => {
   };
 
   return (
-    <AppContext.Provider value={providerValue}>{children}</AppContext.Provider>
+    <AppContext.Provider value={providerValue}>
+      {loading ? "Loading..." : children}
+    </AppContext.Provider>
   );
 };
 

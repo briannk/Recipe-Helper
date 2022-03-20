@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { useGlobalContext } from "../context";
-import Message from "../components/Message";
+import { useGlobalContext } from "../../context";
+import Message from "../Message";
 
 const SignUp = () => {
   const emailRef = useRef();
@@ -11,8 +11,6 @@ const SignUp = () => {
 
   const { signUp, loading, setLoading, message, setMessage } =
     useGlobalContext();
-
-  console.log(loading, message);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -1,6 +1,6 @@
 import React from "react";
 import RecipeTag from "./RecipeTag";
-import "../stylesheets/Recipe.css";
+import "../../stylesheets/Recipe.css";
 
 const RecipeTags = ({ tagsList, handleUpdate = () => {}, toEdit }) => {
   let tagsElem;
