@@ -41,9 +41,7 @@ const RecipeDescription = ({
 
   useEffect(() => {
     if (description === "") {
-      let dummyObj = { target: marker };
-      console.log("!!!dummyObj ", dummyObj);
-      let dispatchObj = { payload: { event: dummyObj } };
+      let dispatchObj = { payload: { event: { target: marker } } };
       handleUpdate(dispatchObj);
     }
   }, [marker]);

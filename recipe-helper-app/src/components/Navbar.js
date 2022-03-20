@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useGlobalContext } from "../context";
-import UserCard from "./UserCard";
+import UserCard from "./user/UserCard";
 import SearchBar from "./SearchBar";
 import { TiThMenu, TiThMenuOutline } from "react-icons/ti";
 

@@ -1,5 +1,5 @@
 dev_stuff/
 node_modules/
 
-backend/src/.env
+backend/src/controllers/.env
 backend/src/serviceAccountKey.json

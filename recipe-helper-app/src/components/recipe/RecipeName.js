@@ -38,9 +38,7 @@ const RecipeName = ({ name, handleUpdate = () => {}, toEdit = false }) => {
 
   useEffect(() => {
     if (name === "") {
-      let dummyObj = { target: marker };
-      console.log("!!!dummyObj ", dummyObj);
-      let dispatchObj = { payload: { event: dummyObj } };
+      let dispatchObj = { payload: { target: marker } };
       handleUpdate(dispatchObj);
     }
   }, [marker]);

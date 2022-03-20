@@ -1,10 +1,13 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import { useGlobalContext } from "../context";
 import "../stylesheets/Recipe.css";
 
 const SearchBar = () => {
   const [recipes, setRecipes] = useState();
-  // const [searchTerm, setSearchTerm] = useState("");
+
+  const { getToken } = useGlobalContext();
+
   const searchRef = useRef(null);
   let timeout = null;
 
@@ -15,9 +18,6 @@ const SearchBar = () => {
       timeout = null;
     }
     timeout = setTimeout(async () => {
-      // setSearchTerm(searc);
-      console.log(searchRef.current.value);
-      console.log("doing search");
       await getRecipes();
     }, 1000);
   };
@@ -27,23 +27,24 @@ const SearchBar = () => {
       setRecipes(null);
       return;
     }
-    const resp = await fetch("http://localhost:5000/api/v1/recipes", {
-      method: "GET",
-      // headers: {
-      //   Authorization: "Bearer " + token,
-      // },
-      headers: {
-        searchTerm: searchRef.current.value,
-      },
-    });
-    console.log(searchRef.current.value);
+
+    const token = await getToken();
+    const resp = await fetch(
+      `http://localhost:5000/api/v1/recipes?searchTerm=${searchRef.current.value}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+
     const results = await resp.json();
-    console.log(results);
-    // return results.payload;
-    if (results && results.payload.recipeData.recipes.length === 0) {
+    console.log(results.payload);
+    if (results && results.payload.recipes.length === 0) {
       setRecipes([{ name: "No recipe found.", _id: "" }]);
     } else {
-      setRecipes(results.payload.recipeData.recipes);
+      setRecipes(results.payload.recipes);
     }
   };
 
@@ -68,7 +69,7 @@ const SearchBar = () => {
 
   return (
     <div className="searchBar">
-      <form action="http://localhost:3000/recipes">
+      <form action="">
         <input
           type="text"
           ref={searchRef}

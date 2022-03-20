@@ -1,5 +1,7 @@
 .image-container > * {
   /* margin: 1em; */
+  display: flex;
+  align-self: center;
 }
 
 .overlay.hide {

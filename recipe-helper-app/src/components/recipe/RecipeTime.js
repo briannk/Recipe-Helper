@@ -23,12 +23,6 @@ const RecipeTime = ({ time, handleUpdate = () => {}, toEdit = false }) => {
           onChange={handleChange}
           defaultValue={time}
         />
-        {/* <input
-              type="text"
-              className="recipe-time-minutes"
-              value={recipe.time}
-              maxlength="59"
-            /> */}
       </div>
     ) : (
       <div className="recipe-time">
@@ -55,9 +49,7 @@ const RecipeTime = ({ time, handleUpdate = () => {}, toEdit = false }) => {
 
   useEffect(() => {
     if (time === "") {
-      let dummyObj = { target: marker };
-      console.log("!!!dummyObj ", dummyObj);
-      let dispatchObj = { payload: { event: dummyObj } };
+      let dispatchObj = { payload: { event: { target: marker } } };
       handleUpdate(dispatchObj);
     }
   }, [marker]);

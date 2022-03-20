@@ -2,7 +2,6 @@ import React, { useRef, useEffect } from "react";
 import { TiDeleteOutline } from "react-icons/ti";
 
 const RecipeTag = ({ listId, tagProp, handleChange, toEdit = false }) => {
-  console.log("toEdit ", toEdit);
   let handleChangeSet = (e) => {
     let dispatchObj = {
       type: "SET_TAG",
@@ -16,7 +15,7 @@ const RecipeTag = ({ listId, tagProp, handleChange, toEdit = false }) => {
     // is resolved during event propagation and won't be
     // available once passed
     let target = e.currentTarget;
-    // console.log("test: ", foo);
+
     let dispatchObj = {
       type: "REMOVE_TAG",
       payload: { target: target, listId },
@@ -57,9 +56,7 @@ const RecipeTag = ({ listId, tagProp, handleChange, toEdit = false }) => {
 
   useEffect(() => {
     if (tagProp === "") {
-      let dummyObj = { target: marker };
-      console.log("!!!dummyObj ", dummyObj);
-      let dispatchObj = { payload: { event: dummyObj } };
+      let dispatchObj = { payload: { event: { target: marker } } };
       handleChange(dispatchObj);
     }
   }, [marker]);

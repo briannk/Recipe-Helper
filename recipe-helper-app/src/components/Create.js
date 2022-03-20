@@ -3,19 +3,19 @@
 // refactor inputs to follow controlled components pattern
 import React, { useState, useReducer } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import RecipeImg from "./RecipeImg";
+import RecipeImg from "./recipe/RecipeImg";
 import data from "./data";
 import "../stylesheets/Recipe.css";
 import { useGlobalContext } from "../context";
-import recipeReducer from "./recipeReducer";
-import RecipeIngredients from "./RecipeIngredients";
-import RecipeName from "./RecipeName";
+import recipeReducer from "./recipe/recipeReducer";
+import RecipeIngredients from "./recipe/RecipeIngredients";
+import RecipeName from "./recipe/RecipeName";
 import Message from "./Message";
-import RecipeDescription from "./RecipeDescription";
-import RecipeTime from "./RecipeTime";
-import RecipeServings from "./RecipeServings";
-import RecipeDirections from "./RecipeDirections";
-import RecipeTags from "./RecipeTags";
+import RecipeDescription from "./recipe/RecipeDescription";
+import RecipeTime from "./recipe/RecipeTime";
+import RecipeServings from "./recipe/RecipeServings";
+import RecipeDirections from "./recipe/RecipeDirections";
+import RecipeTags from "./recipe/RecipeTags";
 
 const Create = () => {
   const { user, getToken, message, setMessage } = useGlobalContext();
@@ -69,17 +69,14 @@ const Create = () => {
     // get all recipes created by a user.
     // TO-DO: create a collection for user info such as display name
     // and keep the document updated at all times.
-    console.log(user.email);
     // return;
     dispatch({ type: "SET_AUTHOR", payload: user.email });
     // sanitize inputs
-    console.log("final state: ", recipe);
     if (recipe.error && recipe.error.length > 0) {
       recipe.error.forEach((node) => {
         node.classList.add("input-error");
       });
       console.log("Empty field exists");
-      let messageObj = { type: "error", content: "Please fill every field." };
       setMessage({ type: "error", content: "Please fill every field." });
       return;
     }
@@ -88,7 +85,6 @@ const Create = () => {
 
     // TO-DO: upload image to cdn
     const token = await getToken();
-    console.log(token);
     let resp = await fetch("http://localhost:5000/api/v1/saveRecipe", {
       method: "POST",
       headers: {
@@ -98,7 +94,6 @@ const Create = () => {
       body: JSON.stringify(recipe),
     });
     resp = await resp.json();
-    console.log(resp);
 
     // redirect to recipe page to see created/updated recipe
     setMessage({ type: "notify", content: resp.payload.message });
@@ -106,7 +101,6 @@ const Create = () => {
   };
 
   let deleteRecipe = async () => {
-    console.log("deleting recipe");
     const token = await getToken();
     let resp = await fetch(
       "http://localhost:5000/api/v1/recipes/" + recipe._id,
@@ -118,7 +112,6 @@ const Create = () => {
       }
     );
     resp = await resp.json();
-    console.log(resp);
   };
 
   let deleteButton =

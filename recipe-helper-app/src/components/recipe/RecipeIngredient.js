@@ -7,9 +7,8 @@ const RecipeIngredient = ({
   handleChange,
   toEdit = false,
 }) => {
-  let ingredientElem, ingredientElemItem;
+  let ingredientElem;
 
-  console.log("ingredientProp ", ingredientProp);
   // wrapper to avoid having to use arrow function in onchange
   let handleChangeSet = (e) => {
     // if(e.target.value === ""){
@@ -33,7 +32,6 @@ const RecipeIngredient = ({
     // is resolved during event propagation and won't be
     // available once passed
     let target = e.currentTarget;
-    // console.log("test: ", foo);
     let dispatchObj = {
       type: "REMOVE_INGREDIENT",
       payload: { target: target, listId },
@@ -41,17 +39,10 @@ const RecipeIngredient = ({
     handleChange(dispatchObj);
   };
 
-  console.log("ingredient: ", toEdit);
-  console.log("ingredient, listId: ", listId);
-
   let qMarker;
-  let iMarker;
 
   let checkQEmpty = (node) => {
     qMarker = node;
-  };
-  let checkIEmpty = (node) => {
-    iMarker = node;
   };
 
   if (toEdit) {
@@ -75,52 +66,16 @@ const RecipeIngredient = ({
         value={""}
       />
     );
-
-    // ingredientElemItem = ingredientProp.ingredientName ? (
-    //   <input
-    //     ref={checkIEmpty}
-    //     type="text"
-    //     name="item"
-    //     className="recipe-ingredient-item"
-    //     value={ingredientProp.ingredientName}
-    //     maxLength="128"
-    //     onChange={handleChangeSet}
-    //   />
-    // ) : (
-    //   <input
-    //     ref={checkIEmpty}
-    //     type="text"
-    //     name="item"
-    //     className="recipe-ingredient-item"
-    //     onChange={handleChangeSet}
-    //     placeholder="filet mignon"
-    //     value={""}
-    //     maxLength="128"
-    //   />
-    // );
   } else {
     ingredientElem = ingredientProp;
-    // ingredientElemItem = (
-    //   <div className="recipe-ingredient-item">
-    //     {ingredientProp.ingredientName}
-    //   </div>
-    // );
   }
 
   useEffect(() => {
     if (ingredientProp === "") {
-      let dummyObj = { target: qMarker };
-      let dispatchObj = { payload: { event: dummyObj } };
+      let dispatchObj = { payload: { event: { target: qMarker } } };
       handleChange(dispatchObj);
     }
   }, [qMarker]);
-  // useEffect(() => {
-  //   if (ingredientProp.ingredientName === "") {
-  //     let dummyObj = { target: iMarker };
-  //     let dispatchObj = { payload: { event: dummyObj } };
-  //     handleChange(dispatchObj);
-  //   }
-  // }, [iMarker]);
 
   return (
     <li>
@@ -137,7 +92,6 @@ const RecipeIngredient = ({
           )
         }
         {ingredientElem}
-        {/* {ingredientElemItem} */}
         {toEdit && (
           <button type="button" onClick={handleChangeRemove}>
             <TiDeleteOutline />
