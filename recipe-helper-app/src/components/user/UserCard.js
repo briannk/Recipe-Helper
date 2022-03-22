@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useGlobalContext } from "../../context";
 import { Link, useHistory } from "react-router-dom";
 import { TiImage, TiCog } from "react-icons/ti";
+import { FiLogOut } from "react-icons/fi";
 // import context for current logged in user
 
 const UserCard = () => {
@@ -9,6 +10,7 @@ const UserCard = () => {
   const history = useHistory();
 
   const [edit, setEdit] = useState(false);
+  const [showCard, setShowCard] = useState();
 
   const handleLogOut = async () => {
     try {
@@ -30,30 +32,40 @@ const UserCard = () => {
 
   if (user) {
     card = (
-      <div className="user-card">
-        <p>Currently logged in as:</p>
-        <div
-          className="user-photo-window"
-          onMouseEnter={() => {
-            setEdit(true);
-          }}
-          onMouseLeave={() => {
-            setEdit(false);
-          }}
-        >
+      <>
+        <div className="user-photo-window hidden lg:block  flex flex-row align-items">
           <img src="/assets/placeholder.png" alt="" className="user-photo" />
-          {edit && <TiImage className="edit-photo" size={42} />}
+          <div className="flex flex-col">
+            <button onClick={handleLogOut}>
+              <FiLogOut />
+            </button>
+          </div>
         </div>
-        {user.email}
-        <Link
-          to={{
-            pathname: "/settings",
-          }}
-        >
-          <TiCog className="button-settings" />
-        </Link>
-        <button onClick={handleLogOut}>Log Out</button>
-      </div>
+        <div className="block lg:hidden user-card">
+          <p>Currently logged in as:</p>
+          <div
+            className="user-photo-window"
+            onMouseEnter={() => {
+              setEdit(true);
+            }}
+            onMouseLeave={() => {
+              setEdit(false);
+            }}
+          >
+            <img src="/assets/placeholder.png" alt="" className="user-photo" />
+            {edit && <TiImage className="edit-photo" size={42} />}
+          </div>
+          {user.email}
+          <Link
+            to={{
+              pathname: "/settings",
+            }}
+          >
+            <TiCog className="button-settings" />
+          </Link>
+          <button onClick={handleLogOut}>Log Out</button>
+        </div>
+      </>
     );
   } else card = <Link to="/signin">Sign In</Link>;
 

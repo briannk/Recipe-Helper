@@ -38,7 +38,7 @@ const RecipeTags = ({ tagsList, handleUpdate = () => {}, toEdit }) => {
     addTag();
   }
 
-  tagsElem = <div className="recipe-tags">{temp}</div>;
+  tagsElem = <div className="p-4">{temp}</div>;
 
   return (
     <section>

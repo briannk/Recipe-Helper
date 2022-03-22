@@ -11,14 +11,14 @@ let client;
     client = createClient();
     await client.connect();
   } catch (e) {
-    throw e;
+    console.log(e);
   }
 })();
 
 client.on("connect", () => {
   console.log("Redis client is connected!");
 });
-client.on("error", (err) => console.log("Redis Client Error", err));
+// client.on("error", (err) => console.log("Redis Client Error", err));
 
 // only cache user generated recipes as edamam prohibits
 // caching their data
@@ -45,6 +45,9 @@ const checkCache = async (req, res, next) => {
     }
   } catch (e) {
     console.log(e);
+    // the cache being unavailable will throw an error
+    // therefore log the error but continue to the mongodb
+    next();
   }
 };
 

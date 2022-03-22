@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 
+const styles = "text-2xl p-4";
+
 const RecipeTime = ({ time, handleUpdate = () => {}, toEdit = false }) => {
   let handleChange = (e) => {
     let dispatchObj = { type: "SET_TIME", payload: { event: e } };
@@ -19,7 +21,7 @@ const RecipeTime = ({ time, handleUpdate = () => {}, toEdit = false }) => {
         <input
           ref={checkEmpty}
           type="text"
-          className="recipe-time"
+          className={styles}
           onChange={handleChange}
           defaultValue={time}
         />
@@ -29,7 +31,7 @@ const RecipeTime = ({ time, handleUpdate = () => {}, toEdit = false }) => {
         <input
           ref={checkEmpty}
           type="text"
-          className="recipe-time"
+          className={styles}
           onChange={handleChange}
           placeholder="1 hour prep, 30 minutes cooking"
         />
@@ -44,7 +46,7 @@ const RecipeTime = ({ time, handleUpdate = () => {}, toEdit = false }) => {
       </div>
     );
   } else {
-    timeElem = <div className="recipe-time">{time}</div>;
+    timeElem = <div className={styles}>{time}</div>;
   }
 
   useEffect(() => {

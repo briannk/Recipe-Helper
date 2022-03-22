@@ -1,9 +1,10 @@
 const { MongoClient, ObjectID } = require("mongodb");
 const { cacheData } = require("./cache");
-require("dotenv").config();
+require("dotenv").config({ path: "src/.env" });
 
 const { readExternalRecipe, readExternalRecipes } = require("./api/edamam");
 
+console.log(process.env);
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PW}@cluster0.yv1xn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
 const client = new MongoClient(uri, {

@@ -45,48 +45,51 @@ const Recipe = () => {
       return;
     }
     return (
-      <div className="recipe-container">
+      <div className="md:container font-mono p-2 md:p-4 bg-amber-50">
         <RecipeImg path={recipe.imagePath} />
 
-        <RecipeName name={recipe.name} />
-        {/* <h2>{recipe.author}</h2> */}
-        <span className="recipe-author">{recipe.author || ""}</span>
+        <div className="my-8">
+          <RecipeName name={recipe.name} />
+          {/* <h2>{recipe.author}</h2> */}
+          <span className="p-2">{recipe.author || "No author provided"}</span>
 
-        <RecipeTags tagsList={recipe.tags} />
+          <RecipeTags tagsList={recipe.tags} />
 
-        <RecipeDescription description={recipe.description} />
+          <RecipeDescription description={recipe.description} />
 
-        <div className="recipe-prep-info">
-          <RecipeServings servings={recipe.servings} />
-          <RecipeTime time={recipe.time} />
+          <div className="recipe-prep-info">
+            <RecipeServings servings={recipe.servings} />
+            <RecipeTime time={recipe.time} />
+          </div>
+
+          <RecipeIngredients ingredientsList={recipe.ingredients} />
+          <RecipeDirections directionsList={recipe.directions} />
+
+          {recipe._id.startsWith("recipe_") ? null : (
+            <button type="button" className="p-4">
+              {
+                // The edamam api terms recently updated prohibiting caching
+                // or copying of the data queried
+              }
+
+              <Link
+                to={{
+                  pathname: "/create",
+                  state: {
+                    recipe: recipe,
+                  },
+                }}
+              >
+                Edit Recipe
+              </Link>
+            </button>
+          )}
+          {recipe.url && (
+            <div className="mt-8 p-2 text-slate-500">
+              NOTE: Any missing info might be found at: {recipe.url}
+            </div>
+          )}
         </div>
-
-        {recipe.url && (
-          <div>Any missing info might be found at: {recipe.url}</div>
-        )}
-
-        <RecipeIngredients ingredientsList={recipe.ingredients} />
-        <RecipeDirections directionsList={recipe.directions} />
-
-        {recipe._id.startsWith("recipe_") ? null : (
-          <button type="button" className="edit-recipe-button">
-            {
-              // The edamam api terms recently updated prohibiting caching
-              // or copying of the data queried
-            }
-
-            <Link
-              to={{
-                pathname: "/create",
-                state: {
-                  recipe: recipe,
-                },
-              }}
-            >
-              Edit Recipe
-            </Link>
-          </button>
-        )}
       </div>
 
       // add RecipeNotes component for misc. info

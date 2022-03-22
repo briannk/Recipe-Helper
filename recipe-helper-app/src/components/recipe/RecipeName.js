@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 
+const styles = "font-mono text-5xl p-4 mt-4";
+
 const RecipeName = ({ name, handleUpdate = () => {}, toEdit = false }) => {
   let handleChange = (e) => {
     let dispatchObj = { type: "SET_NAME", payload: { event: e } };
@@ -17,7 +19,7 @@ const RecipeName = ({ name, handleUpdate = () => {}, toEdit = false }) => {
       <input
         ref={checkEmpty}
         type="text"
-        className="recipe-name"
+        className={styles}
         defaultValue={name}
         onChange={handleChange}
         maxLength="64"
@@ -26,14 +28,14 @@ const RecipeName = ({ name, handleUpdate = () => {}, toEdit = false }) => {
       <input
         ref={checkEmpty}
         type="text"
-        className="recipe-name"
+        className={styles}
         placeholder="Mustard Steak au Poivre"
         onChange={handleChange}
         maxLength="64"
       />
     );
   } else {
-    nameElem = <div className="recipe-name">{name}</div>;
+    nameElem = <div className={styles}>{name}</div>;
   }
 
   useEffect(() => {

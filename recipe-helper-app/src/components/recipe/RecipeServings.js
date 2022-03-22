@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 
+const styles = "text-2xl p-4";
+
 const RecipeServings = ({
   servings,
   handleUpdate = () => {},
@@ -21,7 +23,7 @@ const RecipeServings = ({
       <input
         ref={checkEmpty}
         type="text"
-        className="recipe-servings"
+        className={styles}
         onChange={handleChange}
         defaultValue={servings}
       />
@@ -29,20 +31,18 @@ const RecipeServings = ({
       <input
         ref={checkEmpty}
         type="text"
-        className="recipe-servings"
+        className={styles}
         onChange={handleChange}
         placeholder="2"
       />
     );
   } else {
-    servingsElem = <div className="recipe-servings">{servings}</div>;
+    servingsElem = <div className={styles}>{servings}</div>;
   }
 
   useEffect(() => {
     if (servings === "") {
-      let dummyObj = { target: marker };
-      console.log("!!!dummyObj ", dummyObj);
-      let dispatchObj = { payload: { event: dummyObj } };
+      let dispatchObj = { payload: { event: { target: marker } } };
       handleUpdate(dispatchObj);
     }
   }, [marker]);
