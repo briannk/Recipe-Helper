@@ -1,32 +1,24 @@
-import React, { useRef, useEffect } from "react";
-import { TiDeleteOutline } from "react-icons/ti";
+import React, { useRef } from "react";
+import { VscChromeClose } from "react-icons/vsc";
 
-const RecipeTag = ({ listId, tagProp, handleChange, toEdit = false }) => {
+const tagStyles =
+  "border rounded-full flex justify-center items-center border-orange-400/90 bg-orange-400/90 hover:border-orange-300 hover:bg-orange-300 py-1 px-4 w-fit max-w-full text-white text-lg transition duration-200 cursor-pointer gap-2";
+const inputStyles =
+  "bg-transparent border-none focus:border-none focus:outline-none";
+
+const RecipeTag = ({ uuid, tagProp, handleChange, toEdit = false }) => {
   let handleChangeSet = (e) => {
-    let dispatchObj = {
+    handleChange({
       type: "SET_TAG",
-      payload: { node: e.currentTarget, listId },
-    };
-    handleChange(dispatchObj);
+      payload: { value: e.target.value, uuid },
+    });
   };
 
   let handleChangeRemove = (e) => {
-    // pass the target as opposed to e since currentTarget
-    // is resolved during event propagation and won't be
-    // available once passed
-    let target = e.currentTarget;
-
-    let dispatchObj = {
+    handleChange({
       type: "REMOVE_TAG",
-      payload: { target: target, listId },
-    };
-    handleChange(dispatchObj);
-  };
-
-  let marker = useRef(null);
-
-  let checkEmpty = (node) => {
-    marker = node;
+      payload: { value: e.target.value, uuid },
+    });
   };
 
   let tagElem;
@@ -34,16 +26,14 @@ const RecipeTag = ({ listId, tagProp, handleChange, toEdit = false }) => {
   if (toEdit) {
     tagElem = tagProp ? (
       <input
-        ref={checkEmpty}
-        className="recipe-tag"
+        className={inputStyles}
         onChange={handleChangeSet}
         value={tagProp}
         maxLength="32"
       />
     ) : (
       <input
-        ref={checkEmpty}
-        className="recipe-tag"
+        className={inputStyles}
         onChange={handleChangeSet}
         placeholder="Lunch"
         maxLength="32"
@@ -54,19 +44,16 @@ const RecipeTag = ({ listId, tagProp, handleChange, toEdit = false }) => {
     tagElem = tagProp;
   }
 
-  useEffect(() => {
-    if (tagProp === "") {
-      let dispatchObj = { payload: { event: { target: marker } } };
-      handleChange(dispatchObj);
-    }
-  }, [marker]);
-
   return (
-    <div className="recipe-tag">
+    <div className={tagStyles}>
       {tagElem}
       {toEdit && (
-        <button type="button" onClick={handleChangeRemove}>
-          <TiDeleteOutline />
+        <button
+          type="button"
+          onClick={handleChangeRemove}
+          className="flex justify-center items-center"
+        >
+          <VscChromeClose size={32} />
         </button>
       )}
     </div>

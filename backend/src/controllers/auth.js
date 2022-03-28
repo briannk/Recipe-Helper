@@ -15,7 +15,6 @@ const validateToken = async (req, res, next) => {
   }
 
   try {
-    console.log(JSON.stringify(idToken));
     const decodedIdToken = await admin.auth().verifyIdToken(idToken);
     req.user = decodedIdToken;
     next();

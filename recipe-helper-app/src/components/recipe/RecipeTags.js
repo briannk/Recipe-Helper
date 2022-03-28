@@ -1,50 +1,46 @@
-import React from "react";
+import React, { useEffect } from "react";
 import RecipeTag from "./RecipeTag";
 import "../../stylesheets/Recipe.css";
 
 const RecipeTags = ({ tagsList, handleUpdate = () => {}, toEdit }) => {
-  let tagsElem;
-  let itemId = 0;
-
-  let updateTag = (dispatchObj) => {
-    handleUpdate(dispatchObj);
-  };
-
-  let addTag = () => {
-    let dispatchObj = {
+  let addTag = (e) => {
+    handleUpdate({
       type: "SET_TAG",
-      payload: { listId: itemId },
-    };
-    handleUpdate(dispatchObj);
-    itemId++;
+      payload: {},
+    });
   };
 
-  let temp;
+  let list;
   if (tagsList.length !== 0) {
-    temp = tagsList.map((tagItem) => {
-      let returnElem = (
+    list = Object.entries(tagsList).map(([uuid, tagItem]) => {
+      return (
         <RecipeTag
-          key={itemId}
-          listId={itemId}
+          key={uuid}
+          uuid={uuid}
           tagProp={tagItem}
-          handleChange={updateTag}
+          handleChange={handleUpdate}
           toEdit={toEdit}
         />
       );
-      itemId++;
-      return returnElem;
     });
-  } else {
-    addTag();
   }
 
-  tagsElem = <div className="p-4">{temp}</div>;
+  useEffect(() => {
+    if (Object.keys(tagsList).length === 0 && toEdit) {
+      addTag();
+    }
+  }, [tagsList]);
 
   return (
-    <section>
-      {tagsElem}
+    <section className="my-4">
+      <div className="p-4 flex flex-wrap gap-2 w-full lg:w-fit">{list}</div>
+
       {toEdit && (
-        <button type="button" onClick={addTag}>
+        <button
+          type="button"
+          onClick={addTag}
+          className="border-2 rounded border-orange-300 p-2 mx-4 hover:bg-orange-300/70 hover:text-white transition-all duration-200"
+        >
           + Add Tag
         </button>
       )}

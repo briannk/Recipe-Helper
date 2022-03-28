@@ -11,6 +11,7 @@ const { response } = require("express");
 
 // routes
 const recipeRoutes = require("./routes/recipe");
+const userRoutes = require("./routes/user");
 
 const app = express();
 
@@ -64,17 +65,12 @@ admin.initializeApp({
 //   }
 // }
 
-async function createUser(client, data) {}
-
-async function editUser(client, data) {}
-
-async function deleteUser(client, data) {}
-
 app.use(cors());
 app.use(express.json());
 app.use(validateToken);
 
 app.use("/api/v1/recipes", recipeRoutes);
+app.use("/api/v1/users", userRoutes);
 
 // app.get("/api/v1/recipes", async (req, res) => {
 //   let results;

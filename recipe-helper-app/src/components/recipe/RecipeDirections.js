@@ -1,7 +1,4 @@
-// component render error may be caused by reducer running and
-// updating state before component finishes rendering
-
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import RecipeDirection from "./RecipeDirection";
 import "../../stylesheets/Recipe.css";
 
@@ -10,54 +7,51 @@ const RecipeDirections = ({
   handleUpdate = () => {},
   toEdit,
 }) => {
-  // assigns incrementing keys to Direction list to track changes
-  // const [itemId, setItemId] = useState(0);
-  let directionsElem;
-  let itemId = 0;
-  let updateDirection = (dispatchObj) => {
-    handleUpdate(dispatchObj);
-  };
-
   let addDirection = () => {
-    let dispatchObj = { type: "SET_DIRECTION", payload: { listId: itemId } };
-    itemId++;
-    handleUpdate(dispatchObj);
+    handleUpdate({ type: "SET_DIRECTION", payload: {} });
   };
 
-  let placeholder;
-  // cannot rely on state as it does not appear to update in time
-  // for the next iteration, resulting in duplicate keys
+  let list = null;
 
-  if (directionsList.length !== 0) {
-    placeholder = directionsList.map((directionsItem, index) => {
+  if (Object.keys(directionsList).length !== 0) {
+    list = Object.entries(directionsList).map(([uuid, directionsItem]) => {
       let returnElem = (
-        <RecipeDirection
-          key={itemId}
-          listId={itemId}
-          directionProp={directionsItem}
-          handleChange={updateDirection}
-          toEdit={toEdit}
-        />
+        <li key={uuid}>
+          <RecipeDirection
+            uuid={uuid}
+            directionProp={directionsItem}
+            handleChange={handleUpdate}
+            toEdit={toEdit}
+          />
+        </li>
       );
-      itemId++;
       return returnElem;
     });
   } else {
-    addDirection();
+    if (!toEdit) {
+      list = <div>No directions provided.</div>;
+    }
   }
-  directionsElem = (
-    <div className="recipe-directions">
-      <ol>{placeholder}</ol>
-    </div>
-  );
+
+  useEffect(() => {
+    if (Object.keys(directionsList).length === 0 && toEdit) {
+      addDirection();
+    }
+  }, [directionsList]);
 
   return (
-    <section>
+    <section className="my-4">
       <div className="section-title">Directions</div>
-      {directionsElem}
+      <div className="my-2">
+        <ol>{list}</ol>
+      </div>
 
       {toEdit && (
-        <button type="button" onClick={addDirection}>
+        <button
+          type="button"
+          onClick={() => addDirection()}
+          className="border-2 rounded border-orange-300 p-2 mx-4 hover:bg-orange-300/70 hover:text-white transition-all duration-200"
+        >
           + Add Direction
         </button>
       )}

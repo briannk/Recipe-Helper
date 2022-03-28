@@ -28,7 +28,7 @@ const RecipeImg = ({ path }) => {
         <img
           src={imgPath}
           alt=""
-          className="w-full object-cover"
+          className="w-full object-cover cursor-pointer"
           onClick={() => {
             let overlay = document.querySelector(".overlay");
             overlay.classList.remove("hide");

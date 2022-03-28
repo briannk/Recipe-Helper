@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react";
-import data from "../data";
 import RecipeCard from "./RecipeCard";
 import { useGlobalContext } from "../../context";
 import Message from "../Message";
 
 const Recipes = () => {
-  const { getToken, setMessage } = useGlobalContext();
+  const { getToken } = useGlobalContext();
 
   const [recipes, setRecipes] = useState([]);
 
   const getRecipes = async () => {
     try {
       const token = await getToken();
-      console.log(window.location.search);
       const resp = await fetch(
         `http://localhost:5000/api/v1/recipes${
           window.location.search ? `?searchTerm${window.location.search}` : ""
@@ -24,9 +22,8 @@ const Recipes = () => {
           },
         }
       );
-      console.log("postcall");
       const recipeList = await resp.json();
-      console.log(recipeList);
+
       setRecipes(recipeList.payload.recipes);
     } catch (e) {
       console.log(e);
@@ -36,10 +33,10 @@ const Recipes = () => {
   const RecipeList = () => {
     if (recipes && recipes.length > 0) {
       return (
-        <ul>
+        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:max-w-6xl w-full">
           {recipes.map((recipeEntry) => {
             return (
-              <li key={recipeEntry._id}>
+              <li key={recipeEntry._id} className="sm:h-72">
                 <RecipeCard recipe={recipeEntry} />
               </li>
             );
@@ -53,14 +50,12 @@ const Recipes = () => {
 
   useEffect(() => {
     getRecipes();
-    console.log(recipes);
   }, []);
 
   return (
-    <div className="recipe-list">
+    <div className="container p-2 md:p-4 bg-amber-50 flex justify-center">
       {/* <Message /> */}
       <RecipeList />
-      {/* {console.log(getRecipes())} */}
     </div>
   );
 };

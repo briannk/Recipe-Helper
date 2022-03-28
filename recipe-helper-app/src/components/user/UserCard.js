@@ -33,14 +33,24 @@ const UserCard = () => {
   if (user) {
     card = (
       <>
-        <div className="user-photo-window hidden lg:block  flex flex-row align-items">
-          <img src="/assets/placeholder.png" alt="" className="user-photo" />
-          <div className="flex flex-col">
+        <div className="hidden lg:flex h-full p-4 content-center">
+          <div className="user-photo-window ">
+            <img src="/assets/placeholder.png" alt="" className="user-photo" />
+          </div>
+          <div className="flex flex-col h-full justify-around items-center">
             <button onClick={handleLogOut}>
-              <FiLogOut />
+              <FiLogOut color="white" size={28} />
             </button>
+            <Link
+              to={{
+                pathname: "/settings",
+              }}
+            >
+              <TiCog color="white" size={32} />
+            </Link>
           </div>
         </div>
+
         <div className="block lg:hidden user-card">
           <p>Currently logged in as:</p>
           <div

@@ -19,7 +19,7 @@ const NavbarSide = () => {
   return (
     <nav>
       <button
-        className="nav-toggle-button"
+        className="nav-toggle-button w-min"
         onClick={handleClick}
         onMouseOver={() => setIsHover(true)}
         onMouseOut={() => setIsHover(false)}

@@ -1,18 +1,18 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
+
+const descStyles = "my-2 p-4 bg-orange-100 text-lg";
+const taStyles = "p-2 h-32";
 
 const RecipeDescription = ({
   description,
   handleUpdate = () => {},
   toEdit = false,
 }) => {
-  let marker = useRef(null);
-
-  let checkEmpty = (node) => {
-    marker = node;
-  };
   let handleChange = (e) => {
-    let dispatchObj = { type: "SET_DESCRIPTION", payload: { node: marker } };
-    handleUpdate(dispatchObj);
+    handleUpdate({
+      type: "SET_DESCRIPTION",
+      payload: { value: e.target.value },
+    });
   };
 
   let descriptionElem;
@@ -20,35 +20,26 @@ const RecipeDescription = ({
   if (toEdit) {
     descriptionElem = description ? (
       <textarea
-        ref={checkEmpty}
-        className="recipe-description"
+        className={taStyles}
         value={description}
         onChange={handleChange}
         maxLength="512"
       />
     ) : (
       <textarea
-        ref={checkEmpty}
-        className="recipe-description"
+        className={taStyles}
         placeholder="Have you ever wondered whether or not to add mustard to your steak? This recipe serves as my thesis on why mustard should be banned from use in all cuisine."
         onChange={handleChange}
         maxLength="512"
       />
     );
   } else {
-    descriptionElem = <p className="recipe-description">{description}</p>;
+    descriptionElem = <p className={descStyles}>{description}</p>;
   }
-
-  useEffect(() => {
-    if (description === "") {
-      let dispatchObj = { payload: { event: { target: marker } } };
-      handleUpdate(dispatchObj);
-    }
-  }, [marker]);
 
   return (
     <>
-      {toEdit && <p>Brief description of the recipe</p>}
+      {toEdit && <p className="m-2 text-xl">Brief description of the recipe</p>}
       {descriptionElem}
     </>
   );

@@ -1,7 +1,6 @@
 const axios = require("axios");
 require("dotenv").config();
 
-console.log("edamam id: ", process.env.EDAMAM_APP_ID);
 // api stuff
 const appId = process.env.EDAMAM_APP_ID;
 const appKey = process.env.EDAMAM_APP_KEY;

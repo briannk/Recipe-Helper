@@ -6,6 +6,7 @@ module.exports = {
       colors: {
         primary: "rgb(111, 245, 207)",
       },
+      transform: ["hover", "focus"],
     },
   },
   plugins: [],

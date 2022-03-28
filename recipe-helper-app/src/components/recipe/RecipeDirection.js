@@ -1,80 +1,59 @@
-import React, { useRef, useEffect } from "react";
-import { TiDeleteOutline } from "react-icons/ti";
+import React from "react";
+import { CgCloseR } from "react-icons/cg";
+
+const directionStyles = "p-2 flex gap-2";
+const inputStyles = "p-2 h-16";
 
 const RecipeDirection = ({
-  listId,
+  uuid,
   directionProp,
   handleChange,
   toEdit = false,
 }) => {
   let handleChangeSet = (e) => {
-    let dispatchObj = {
+    handleChange({
       type: "SET_DIRECTION",
-      payload: { node: e.currentTarget, listId },
-    };
-    handleChange(dispatchObj);
+      payload: { value: e.target.value, uuid },
+    });
   };
 
   let handleChangeRemove = (e) => {
-    // pass the target as opposed to e since currentTarget
-    // is resolved during event propagation and won't be
-    // available once passed
-    let target = e.currentTarget;
-    let dispatchObj = {
+    handleChange({
       type: "REMOVE_DIRECTION",
-      payload: { event: target, listId },
-    };
-    handleChange(dispatchObj);
+      payload: { uuid },
+    });
   };
-
-  let marker = useRef(null);
-
-  let checkEmpty = (node) => {
-    marker = node;
-  };
-
   let directionElem;
 
   if (toEdit) {
     directionElem = directionProp ? (
       <textarea
-        ref={checkEmpty}
-        className="recipe-direction"
+        className={inputStyles}
         onChange={handleChangeSet}
         value={directionProp}
         maxLength="256"
       />
     ) : (
       <textarea
-        ref={checkEmpty}
-        className="recipe-direction"
+        className={inputStyles}
         onChange={handleChangeSet}
         placeholder="Cook until 125F then deglaze the pan with mustard."
         maxLength="256"
       />
     );
   } else {
-    directionElem = <div className="recipe-direction">{directionProp}</div>;
+    directionElem = directionProp;
   }
 
-  useEffect(() => {
-    if (directionProp === "") {
-      let dispatchObj = { payload: { event: { target: marker } } };
-      handleChange(dispatchObj);
-    }
-  }, [marker]);
-
   return (
-    <li>
-      <div className="recipe-direction">
-        {directionElem}
-        {toEdit && (
-          <button type="button" onClick={handleChangeRemove}>
-            <TiDeleteOutline />
-          </button>
-        )}
-      </div>
-    </li>
+    <div className={directionStyles}>
+      {directionElem}
+      {toEdit && (
+        <button type="button" onClick={handleChangeRemove}>
+          <CgCloseR size={24} />
+        </button>
+      )}
+    </div>
   );
 };
 

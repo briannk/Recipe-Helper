@@ -8,32 +8,35 @@ const liStyles = "rounded p-4 px-6 hover:bg-orange-300 text-white text-3xl";
 
 const NavbarFull = () => {
   return (
-    <nav className="">
-      <div className="w-full h-32 bg-orange-200 flex flex-row justify-center">
-        <div className="w-full flex flex-row justify-around">
+    <nav>
+      <div className="w-full h-32 bg-orange-200 flex flex-row justify-center z-50">
+        <div className="w-full flex flex-row justify-between">
           <Link to="/">
             <img
               src={logo}
               alt="Recipe Helper Logo"
-              className="h-32 object-contain"
+              className="h-32 ml-4 object-contain"
             />
           </Link>
-          <ul className="w-1/3 flex justify-around lg:justify-around lg:gap-8 items-center">
-            <li className={liStyles}>
-              <Link to="/">Home</Link>
-            </li>
-            <li className={liStyles}>
-              <Link to="/recipes">Recipes</Link>
-            </li>
-            <li className={liStyles}>
-              <Link to="/create">Create</Link>
-            </li>
+          <ul className="w-1/3 flex justify-around lg:justify-around xl:gap-8 items-center">
+            <Link to="/">
+              <li className={liStyles}>Home</li>
+            </Link>
+            <Link to="/recipes">
+              <li className={liStyles}>Recipes</li>
+            </Link>
+
+            <Link to="/create">
+              <li className={liStyles}>Create</li>
+            </Link>
           </ul>
           <div className="w-1/3 flex flex-col justify-center content-center">
             <SearchBar />
           </div>
         </div>
+        {/* <div className="w-1/6"> */}
         <UserCard />
+        {/* </div> */}
       </div>
     </nav>
   );

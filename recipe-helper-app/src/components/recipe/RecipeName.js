@@ -1,23 +1,16 @@
-import React, { useEffect } from "react";
+import React from "react";
 
-const styles = "font-mono text-5xl p-4 mt-4";
+const styles = "text-5xl p-4 w-full lg:w-fit";
 
 const RecipeName = ({ name, handleUpdate = () => {}, toEdit = false }) => {
   let handleChange = (e) => {
-    let dispatchObj = { type: "SET_NAME", payload: { event: e } };
-    handleUpdate(dispatchObj);
+    handleUpdate({ type: "SET_NAME", payload: { value: e.target.value } });
   };
 
-  let marker;
-
-  let checkEmpty = (node) => {
-    marker = node;
-  };
   let nameElem;
   if (toEdit) {
     nameElem = name ? (
       <input
-        ref={checkEmpty}
         type="text"
         className={styles}
         defaultValue={name}
@@ -26,7 +19,6 @@ const RecipeName = ({ name, handleUpdate = () => {}, toEdit = false }) => {
       />
     ) : (
       <input
-        ref={checkEmpty}
         type="text"
         className={styles}
         placeholder="Mustard Steak au Poivre"
@@ -35,20 +27,13 @@ const RecipeName = ({ name, handleUpdate = () => {}, toEdit = false }) => {
       />
     );
   } else {
-    nameElem = <div className={styles}>{name}</div>;
+    nameElem = name;
   }
-
-  useEffect(() => {
-    if (name === "") {
-      let dispatchObj = { payload: { target: marker } };
-      handleUpdate(dispatchObj);
-    }
-  }, [marker]);
 
   return (
     <>
-      {toEdit && <p>Name of the recipe</p>}
-      {nameElem}
+      {toEdit && <p className="m-2 text-xl">Name of the recipe</p>}
+      <div className={styles}>{nameElem}</div>
     </>
   );
 };

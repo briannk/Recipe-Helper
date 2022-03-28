@@ -11,7 +11,7 @@ let client;
     client = createClient();
     await client.connect();
   } catch (e) {
-    console.log(e);
+    // console.log(e);
   }
 })();
 
@@ -24,12 +24,6 @@ client.on("connect", () => {
 // caching their data
 const checkCache = async (req, res, next) => {
   try {
-    console.log(
-      JSON.stringify({
-        key1: "value1",
-        array1: [{ nKey1: "nVal1" }, { nKey2: "" }],
-      })
-    );
     console.log("checking cache...");
     const recipeId = req.params.recipeId;
     if (await client.exists(recipeId)) {
@@ -69,6 +63,8 @@ const cacheData = async (dataSet) => {
   }
 };
 
+const removeFromCache = async (id) => {};
+
 // gracefully terminate the connection
 process.on("SIGINT", client.quit);
 process.on("SIGTERM", client.quit);
@@ -76,4 +72,5 @@ process.on("SIGTERM", client.quit);
 module.exports = {
   checkCache,
   cacheData,
+  removeFromCache,
 };

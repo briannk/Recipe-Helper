@@ -57,9 +57,9 @@ const SearchBar = () => {
 
   let searchResults = showResults && (
     <>
-      {/* // use a transparent div to detect when a click occurs // outside of the
-        search results */}
-      <ul className="bg-white/80 absolute w-full buttom-0 p-4">
+      {/* // use a transparent div to detect when a click occurs 
+      // outside of the search results */}
+      <ul className="bg-white/80 absolute w-full buttom-0 p-4 z-50">
         {recipes &&
           recipes.map((recipe, index) => (
             <Link
@@ -94,7 +94,7 @@ const SearchBar = () => {
         onMouseOut={() => clear && setClear(false)}
       >
         <ImSearch
-          className="absolute left-0 ml-4 h-full"
+          className="absolute left-0 ml-4 h-full hidden md:visible"
           size={24}
           color="gray"
         />
