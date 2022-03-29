@@ -11,25 +11,19 @@ let client;
     client = createClient();
     await client.connect();
   } catch (e) {
-    throw e;
+    // console.log(e);
   }
 })();
 
 client.on("connect", () => {
   console.log("Redis client is connected!");
 });
-client.on("error", (err) => console.log("Redis Client Error", err));
+// client.on("error", (err) => console.log("Redis Client Error", err));
 
 // only cache user generated recipes as edamam prohibits
 // caching their data
 const checkCache = async (req, res, next) => {
   try {
-    console.log(
-      JSON.stringify({
-        key1: "value1",
-        array1: [{ nKey1: "nVal1" }, { nKey2: "" }],
-      })
-    );
     console.log("checking cache...");
     const recipeId = req.params.recipeId;
     if (await client.exists(recipeId)) {
@@ -45,6 +39,9 @@ const checkCache = async (req, res, next) => {
     }
   } catch (e) {
     console.log(e);
+    // the cache being unavailable will throw an error
+    // therefore log the error but continue to the mongodb
+    next();
   }
 };
 
@@ -66,6 +63,8 @@ const cacheData = async (dataSet) => {
   }
 };
 
+const removeFromCache = async (id) => {};
+
 // gracefully terminate the connection
 process.on("SIGINT", client.quit);
 process.on("SIGTERM", client.quit);
@@ -73,4 +72,5 @@ process.on("SIGTERM", client.quit);
 module.exports = {
   checkCache,
   cacheData,
+  removeFromCache,
 };

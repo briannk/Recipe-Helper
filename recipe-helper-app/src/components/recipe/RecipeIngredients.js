@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import RecipeIngredient from "./RecipeIngredient";
 import "../../stylesheets/Recipe.css";
 
@@ -7,54 +7,49 @@ const RecipeIngredients = ({
   handleUpdate = () => {},
   toEdit,
 }) => {
-  let ingredientsElem;
-  let itemId = 0;
-  let updateIngredient = (dispatchObj) => {
-    handleUpdate(dispatchObj);
-  };
-
   let addIngredient = () => {
     let dispatchObj = {
       type: "SET_INGREDIENT",
-      payload: { listId: itemId },
+      payload: {},
     };
     handleUpdate(dispatchObj);
-    itemId++;
   };
 
-  let placeholder;
-  // cannot rely on state as it does not appear to update in time
-  // for the next iteration, resulting in duplicate keys
-  if (ingredientsList.length !== 0) {
-    placeholder = ingredientsList.map((ingredientItem, index) => {
-      let returnElem = (
+  let list;
+  if (Object.keys(ingredientsList).length !== 0) {
+    list = Object.entries(ingredientsList).map(([uuid, ingredientItem]) => {
+      return (
         <RecipeIngredient
-          key={itemId}
-          listId={itemId}
+          key={uuid}
+          uuid={uuid}
           ingredientProp={ingredientItem}
-          handleChange={updateIngredient}
+          handleChange={handleUpdate}
           toEdit={toEdit}
         />
       );
-      itemId++;
-      return returnElem;
     });
   } else {
-    addIngredient();
   }
-  ingredientsElem = (
-    <div className="recipe-ingredients">
-      <ul>{placeholder}</ul>
-    </div>
-  );
+
+  useEffect(() => {
+    if (Object.keys(ingredientsList).length === 0 && toEdit) {
+      addIngredient();
+    }
+  }, [ingredientsList]);
 
   return (
-    <section>
+    <section className="my-4">
       <div className="section-title">Ingredients</div>
 
-      {ingredientsElem}
+      <div className="my-2">
+        <ul className="my-4">{list}</ul>
+      </div>
       {toEdit && (
-        <button type="button" onClick={addIngredient}>
+        <button
+          type="button"
+          onClick={addIngredient}
+          className="border-2 rounded border-orange-300 p-2 mx-4 hover:bg-orange-300/70 hover:text-white transition-all duration-200"
+        >
           + Add Ingredient
         </button>
       )}

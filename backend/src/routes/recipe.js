@@ -1,4 +1,3 @@
-const e = require("express");
 const express = require("express");
 const router = express.Router();
 
@@ -26,7 +25,6 @@ router.route("/recipe").post(upsertRecipe);
 router
   .route("/recipe/:recipeId")
   .get(checkCache, readRecipe)
-  .post(upsertRecipe)
   .delete(deleteRecipe);
 
 module.exports = router;

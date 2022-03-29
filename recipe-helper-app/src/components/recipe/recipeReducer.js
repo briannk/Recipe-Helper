@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+
 // TO-DO: extract error array logic into functions and add respective
 // function calls in each case
 // ex. all set cases should check for empty target value and add
@@ -51,8 +53,11 @@ const recipeReducer = (state, action) => {
   //     action.payload.event.target.classList.remove("input-error");
   //   }
   // }
+  let uuid = null;
+  let removedProp;
   let newError;
-  newError = checkError(newState, action.payload.node);
+  // newError = checkError(newState, action.payload.node);
+  newError = [];
   newState = { ...newState, newError };
 
   switch (action.type) {
@@ -60,30 +65,41 @@ const recipeReducer = (state, action) => {
     // SETTING ACTIONS
     // ************************************************************************
     case "SET_NAME":
-      newState["name"] = action.payload.node.value;
+      newState["name"] = action.payload.value;
       break;
     case "SET_AUTHOR":
-      newState["author"] = action.payload;
+      newState["author"] = action.payload.value;
       break;
     case "SET_TAG":
-      if (!action.payload.node) {
-        console.log("no event");
-        console.log("listId being set ", action.payload.listId);
-        newState["tags"][action.payload.listId] = "";
+      if (!action.payload.uuid) {
+        uuid = uuidv4();
       } else {
-        console.log("state before set ", newState);
-        newState["tags"][action.payload.listId] = action.payload.node.value;
-        console.log("state after set ", newState);
+        uuid = action.payload.uuid;
+      }
+      console.log("hit!");
+      if (!action.payload.value) {
+        newState = {
+          ...newState,
+          tags: { ...newState["tags"], [uuid]: "" },
+        };
+      } else {
+        newState = {
+          ...newState,
+          tags: {
+            ...newState["tags"],
+            [uuid]: action.payload.value,
+          },
+        };
       }
       break;
     case "SET_DESCRIPTION":
-      newState["description"] = action.payload.node.value;
+      newState["description"] = action.payload.value;
       break;
     case "SET_SERVINGS":
-      newState["servings"] = action.payload.node.value;
+      newState["servings"] = action.payload.value;
       break;
     case "SET_TIME":
-      newState["time"] = action.payload.node.value;
+      newState["time"] = action.payload.value;
       break;
     // case "SET_INGREDIENT_QUANTITY":
     //   newState["ingredients"][action.payload.listId] = {
@@ -109,77 +125,76 @@ const recipeReducer = (state, action) => {
     //   }
     //   break;
     case "SET_INGREDIENT":
-      console.log("reducer");
-      if (!action.payload.node) {
-        console.log("no event");
-        console.log("listId being set ", action.payload.listId);
-        newState["ingredients"][action.payload.listId] = "";
+      if (!action.payload.uuid) {
+        uuid = uuidv4();
       } else {
-        console.log("state before set ", newState);
-        newState["ingredients"][action.payload.listId] =
-          action.payload.node.value;
-        console.log("state after set ", newState);
+        uuid = action.payload.uuid;
+      }
+      console.log("hit!");
+      if (!action.payload.value) {
+        newState = {
+          ...newState,
+          ingredients: { ...newState["ingredients"], [uuid]: "" },
+        };
+      } else {
+        newState = {
+          ...newState,
+          ingredients: {
+            ...newState["ingredients"],
+            [uuid]: action.payload.value,
+          },
+        };
       }
       break;
     case "SET_DIRECTION":
-      if (!action.payload.node) {
-        newState["directions"][action.payload.listId] = "";
+      if (!action.payload.uuid) {
+        uuid = uuidv4();
       } else {
-        console.log("state before set ", newState);
-        newState["directions"][action.payload.listId] =
-          action.payload.node.value;
-        console.log("state after set ", newState);
+        uuid = action.payload.uuid;
+      }
+      console.log("hit!");
+      // console.log({ ...newState["directions"] });
+      if (!action.payload.value) {
+        newState = {
+          ...newState,
+          directions: { ...newState["directions"], [uuid]: "" },
+        };
+      } else {
+        newState = {
+          ...newState,
+          directions: {
+            ...newState["directions"],
+            [uuid]: action.payload.value,
+          },
+        };
       }
       break;
     case "SET_VISIBILITY":
-      newState["visibility"] = action.payload.event.target.checked
-        ? "PUBLIC"
-        : "PRIVATE";
+      newState["visibility"] = action.payload.value ? "PUBLIC" : "PRIVATE";
       break;
 
     // ************************************************************************
     // REMOVING ACTIONS
     // ************************************************************************
     case "REMOVE_TAG":
-      console.log("removing tag ", action.payload.node);
-      console.log("removing listId: ", action.payload.listId);
-      removeError(newState, action);
-      if (newState["tags"].length > action.payload.listId) {
-        newState["tags"] = [
-          ...newState["tags"].slice(0, action.payload.listId),
-          ...newState["tags"].slice(action.payload.listId + 1),
-        ];
-      }
-
+      let tags;
+      ({ [action.payload.uuid]: removedProp, ...tags } = newState["tags"]);
+      newState = { ...newState, tags: tags };
       break;
 
     case "REMOVE_INGREDIENT":
-      console.log("removing ingredient ", action.payload.listId);
-      console.log("removing listId: ", action.payload.listId);
-      if (newState["ingredients"].length > action.payload.listId) {
-        newState["ingredients"] = [
-          ...newState["ingredients"].slice(0, action.payload.listId),
-          ...newState["ingredients"].slice(action.payload.listId + 1),
-        ];
-      }
+      let ingredients;
+      ({ [action.payload.uuid]: removedProp, ...ingredients } =
+        newState["ingredients"]);
+      newState = { ...newState, ingredients: ingredients };
       break;
 
     case "REMOVE_DIRECTION":
-      // TO-DO: splice does not reflect properly, look into newState immutability
-      let foo = action.payload.listId;
-      console.log("state before removal ", newState);
-      if (newState["directions"].length > action.payload.listId) {
-        console.log("removing direction ", foo);
-        console.log("listId being removed ", action.payload.listId);
-        // newState["directions"].splice(action.payload.listId, 1);
-        newState["directions"] = [
-          ...newState["directions"].slice(0, action.payload.listId),
-          ...newState["directions"].slice(action.payload.listId + 1),
-        ];
-      }
-
-      console.log("directions after removal ", newState["directions"]);
-      console.log("state after removal ", newState);
+      let directions = {};
+      ({ [action.payload.uuid]: removedProp, ...directions } =
+        newState["directions"]);
+      console.log(removedProp, directions);
+      newState = { ...newState, directions: directions };
       break;
 
     default:

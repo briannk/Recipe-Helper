@@ -1,4 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
+
+const servingStyles = "text-2xl p-4";
+const inputStyles = "w-full p-4 text-2xl";
 
 const RecipeServings = ({
   servings,
@@ -6,48 +9,35 @@ const RecipeServings = ({
   toEdit = false,
 }) => {
   let handleChange = (e) => {
-    let dispatchObj = { type: "SET_SERVINGS", payload: { event: e } };
-    handleUpdate(dispatchObj);
+    handleUpdate({
+      type: "SET_SERVINGS",
+      payload: { value: e.target.value },
+    });
   };
   let servingsElem;
-  let marker;
-
-  let checkEmpty = (node) => {
-    marker = node;
-  };
 
   if (toEdit) {
     servingsElem = servings ? (
       <input
-        ref={checkEmpty}
         type="text"
-        className="recipe-servings"
+        className={inputStyles}
         onChange={handleChange}
         defaultValue={servings}
       />
     ) : (
       <input
-        ref={checkEmpty}
         type="text"
-        className="recipe-servings"
+        className={inputStyles}
         onChange={handleChange}
         placeholder="2"
       />
     );
   } else {
-    servingsElem = <div className="recipe-servings">{servings}</div>;
+    servingsElem = <div className={servingStyles}>{servings}</div>;
   }
 
-  useEffect(() => {
-    if (servings === "") {
-      let dummyObj = { target: marker };
-      console.log("!!!dummyObj ", dummyObj);
-      let dispatchObj = { payload: { event: dummyObj } };
-      handleUpdate(dispatchObj);
-    }
-  }, [marker]);
   return (
-    <section>
+    <section className="w-full">
       <div className="section-title">Servings</div>
       {servingsElem}
     </section>

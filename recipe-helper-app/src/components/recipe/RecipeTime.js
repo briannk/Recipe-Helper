@@ -1,60 +1,37 @@
-import React, { useEffect } from "react";
+import React from "react";
+
+const timeStyles = "text-2xl p-4";
+const inputStyles = "w-full p-4 text-2xl";
 
 const RecipeTime = ({ time, handleUpdate = () => {}, toEdit = false }) => {
   let handleChange = (e) => {
-    let dispatchObj = { type: "SET_TIME", payload: { event: e } };
-    handleUpdate(dispatchObj);
+    handleUpdate({ type: "SET_TIME", payload: { value: e.target.value } });
   };
 
   let timeElem;
-  let marker;
-
-  let checkEmpty = (node) => {
-    marker = node;
-  };
 
   if (toEdit) {
     timeElem = time ? (
-      <div className="recipe-time">
-        <input
-          ref={checkEmpty}
-          type="text"
-          className="recipe-time"
-          onChange={handleChange}
-          defaultValue={time}
-        />
-      </div>
+      <input
+        type="text"
+        className={inputStyles}
+        onChange={handleChange}
+        defaultValue={time}
+      />
     ) : (
-      <div className="recipe-time">
-        <input
-          ref={checkEmpty}
-          type="text"
-          className="recipe-time"
-          onChange={handleChange}
-          placeholder="1 hour prep, 30 minutes cooking"
-        />
-        {/* H
-            <input
-              type="text"
-              className="recipe-time-minutes"
-              placeholder="30"
-              maxlength="59"
-            />
-            M */}
-      </div>
+      <input
+        type="text"
+        className={inputStyles}
+        onChange={handleChange}
+        placeholder="1 hour prep, 30 minutes cooking"
+      />
     );
   } else {
-    timeElem = <div className="recipe-time">{time}</div>;
+    timeElem = <div className={timeStyles}>{time}</div>;
   }
 
-  useEffect(() => {
-    if (time === "") {
-      let dispatchObj = { payload: { event: { target: marker } } };
-      handleUpdate(dispatchObj);
-    }
-  }, [marker]);
   return (
-    <section>
+    <section className="w-full">
       <div className="section-title">Time to Cook</div>
       {timeElem}
     </section>

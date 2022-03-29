@@ -1,8 +1,12 @@
-import React, { useEffect, useRef } from "react";
-import { TiDeleteOutline } from "react-icons/ti";
+import React from "react";
+import { CgCloseR } from "react-icons/cg";
+import recipeReducer from "./recipeReducer";
+
+const ingredientStyles = "p-2 flex gap-2 items-center";
+const inputStyles = "p-2 w-full";
 
 const RecipeIngredient = ({
-  listId,
+  uuid,
   ingredientProp,
   handleChange,
   toEdit = false,
@@ -11,90 +15,66 @@ const RecipeIngredient = ({
 
   // wrapper to avoid having to use arrow function in onchange
   let handleChangeSet = (e) => {
-    // if(e.target.value === ""){
-    //   return false;
-    // }
-    let dispatchType;
-    if (e.target.name === "ingredient") {
-      dispatchType = "SET_INGREDIENT";
-    } else if (e.target.name === "item") {
-      dispatchType = "SET_INGREDIENT_ITEM";
-    } else {
-      console.log("no dispatch type");
-      return;
-    }
-    let dispatchObj = { type: dispatchType, payload: { event: e, listId } };
-    handleChange(dispatchObj);
+    handleChange({
+      type: "SET_INGREDIENT",
+      payload: { value: e.target.value, uuid },
+    });
   };
 
   let handleChangeRemove = (e) => {
-    // pass the target as opposed to e since currentTarget
-    // is resolved during event propagation and won't be
-    // available once passed
-    let target = e.currentTarget;
-    let dispatchObj = {
+    handleChange({
       type: "REMOVE_INGREDIENT",
-      payload: { target: target, listId },
-    };
-    handleChange(dispatchObj);
-  };
-
-  let qMarker;
-
-  let checkQEmpty = (node) => {
-    qMarker = node;
+      payload: { uuid },
+    });
   };
 
   if (toEdit) {
     ingredientElem = ingredientProp ? (
       <input
-        ref={checkQEmpty}
         type="text"
         name="ingredient"
-        className="recipe-ingredient"
+        className={inputStyles}
         value={ingredientProp}
         onChange={handleChangeSet}
       />
     ) : (
       <input
-        ref={checkQEmpty}
         type="text"
         name="ingredient"
-        className="recipe-ingredient"
+        className={inputStyles}
         onChange={handleChangeSet}
         placeholder="8 oz steak"
         value={""}
       />
     );
   } else {
-    ingredientElem = ingredientProp;
+    ingredientElem = (
+      <label htmlFor={uuid} className="cursor-pointer">
+        {ingredientProp}
+      </label>
+    );
   }
-
-  useEffect(() => {
-    if (ingredientProp === "") {
-      let dispatchObj = { payload: { event: { target: qMarker } } };
-      handleChange(dispatchObj);
-    }
-  }, [qMarker]);
 
   return (
     <li>
-      <div className="recipe-ingredient">
+      <div className={ingredientStyles}>
         {
           // checkboxes are cosmetic
           !toEdit && (
             <input
               type="checkbox"
+              id={uuid}
               onClick={(e) => {
                 e.target.parentNode.classList.toggle("checked");
               }}
+              className="cursor-pointer"
             />
           )
         }
         {ingredientElem}
         {toEdit && (
           <button type="button" onClick={handleChangeRemove}>
-            <TiDeleteOutline />
+            <CgCloseR size={24} />
           </button>
         )}
       </div>

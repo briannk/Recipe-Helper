@@ -1,52 +1,39 @@
-import React, { useEffect } from "react";
+import React from "react";
+
+const styles = "text-5xl p-4 w-full lg:w-fit";
 
 const RecipeName = ({ name, handleUpdate = () => {}, toEdit = false }) => {
   let handleChange = (e) => {
-    let dispatchObj = { type: "SET_NAME", payload: { event: e } };
-    handleUpdate(dispatchObj);
+    handleUpdate({ type: "SET_NAME", payload: { value: e.target.value } });
   };
 
-  let marker;
-
-  let checkEmpty = (node) => {
-    marker = node;
-  };
   let nameElem;
   if (toEdit) {
     nameElem = name ? (
       <input
-        ref={checkEmpty}
         type="text"
-        className="recipe-name"
+        className={styles}
         defaultValue={name}
         onChange={handleChange}
         maxLength="64"
       />
     ) : (
       <input
-        ref={checkEmpty}
         type="text"
-        className="recipe-name"
+        className={styles}
         placeholder="Mustard Steak au Poivre"
         onChange={handleChange}
         maxLength="64"
       />
     );
   } else {
-    nameElem = <div className="recipe-name">{name}</div>;
+    nameElem = name;
   }
-
-  useEffect(() => {
-    if (name === "") {
-      let dispatchObj = { payload: { target: marker } };
-      handleUpdate(dispatchObj);
-    }
-  }, [marker]);
 
   return (
     <>
-      {toEdit && <p>Name of the recipe</p>}
-      {nameElem}
+      {toEdit && <p className="m-2 text-xl">Name of the recipe</p>}
+      <div className={styles}>{nameElem}</div>
     </>
   );
 };
